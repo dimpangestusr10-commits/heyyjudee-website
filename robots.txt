@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dimpangestusr10-commits.github.io/heyyjudee-website/sitemap.xml
