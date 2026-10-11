@@ -1,14 +1,51 @@
-// ======================================================
-// HEYYJUDEE.OFFICIAL
-// FINAL MULTI-PAGE JAVASCRIPT
-// ======================================================
+/* ======================================================
+   HEYYJUDEE.OFFICIAL
+   PREMIUM WEBSITE — FINAL JAVASCRIPT
+====================================================== */
+
+"use strict";
+
+
+/* ======================================================
+   CONFIG
+====================================================== */
 
 const whatsappNumber = "6282287128702";
 
 
-// ======================================================
-// MOBILE HAMBURGER MENU
-// ======================================================
+/* ======================================================
+   NAVBAR — ACTIVE PAGE
+====================================================== */
+
+const currentPage =
+    window.location.pathname.split("/").pop() ||
+    "index.html";
+
+const navLinks =
+    document.querySelectorAll("#mainNav a");
+
+navLinks.forEach((link) => {
+
+    const href =
+        link.getAttribute("href");
+
+    if (!href) return;
+
+    const linkPage =
+        href.split("/").pop();
+
+    if (linkPage === currentPage) {
+
+        link.classList.add("active");
+
+    }
+
+});
+
+
+/* ======================================================
+   MOBILE MENU
+====================================================== */
 
 const menuToggle =
     document.getElementById("menuToggle");
@@ -19,102 +56,125 @@ const mainNav =
 
 if (menuToggle && mainNav) {
 
-    menuToggle.addEventListener("click", () => {
+    menuToggle.addEventListener(
+        "click",
+        (event) => {
 
-        const isOpen =
-            mainNav.classList.toggle("show");
+            event.stopPropagation();
 
-        menuToggle.classList.toggle(
-            "active",
-            isOpen
-        );
+            const isOpen =
+                mainNav.classList.toggle("show");
 
-        menuToggle.setAttribute(
-            "aria-expanded",
-            isOpen ? "true" : "false"
-        );
+            menuToggle.classList.toggle(
+                "active",
+                isOpen
+            );
 
-    });
+            menuToggle.setAttribute(
+                "aria-expanded",
+                isOpen ? "true" : "false"
+            );
 
-
-    const navLinks =
-        mainNav.querySelectorAll("a");
+        }
+    );
 
 
     navLinks.forEach((link) => {
 
-        link.addEventListener("click", () => {
+        link.addEventListener(
+            "click",
+            () => {
 
-            mainNav.classList.remove("show");
+                closeMobileMenu();
 
-            menuToggle.classList.remove("active");
-
-            menuToggle.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-        });
+            }
+        );
 
     });
 
 
-    document.addEventListener("click", (event) => {
+    document.addEventListener(
+        "click",
+        (event) => {
 
-        const clickedInsideNavbar =
-            event.target.closest(".navbar");
+            if (
+                !event.target.closest(".navbar")
+            ) {
 
-        if (!clickedInsideNavbar) {
+                closeMobileMenu();
 
-            mainNav.classList.remove("show");
-
-            menuToggle.classList.remove("active");
-
-            menuToggle.setAttribute(
-                "aria-expanded",
-                "false"
-            );
+            }
 
         }
-
-    });
+    );
 
 }
 
 
-// ======================================================
-// ACTIVE MENU OTOMATIS
-// ======================================================
+function closeMobileMenu() {
 
-const currentPage =
-    window.location.pathname
-        .split("/")
-        .pop() || "index.html";
+    if (!mainNav || !menuToggle) return;
 
+    mainNav.classList.remove("show");
 
-document
-    .querySelectorAll("#mainNav a")
-    .forEach((link) => {
+    menuToggle.classList.remove("active");
 
-        const linkPage =
-            link
-                .getAttribute("href")
-                .split("/")
-                .pop();
+    menuToggle.setAttribute(
+        "aria-expanded",
+        "false"
+    );
+
+}
 
 
-        if (linkPage === currentPage) {
+/* ======================================================
+   NAVBAR SCROLL EFFECT
+====================================================== */
 
-            link.classList.add("active");
-
-        }
-
-    });
+const navbar =
+    document.querySelector(".navbar");
 
 
-// ======================================================
-// SERVICE MODAL
-// ======================================================
+function updateNavbar() {
+
+    if (!navbar) return;
+
+
+    if (window.scrollY > 30) {
+
+        navbar.style.background =
+            "rgba(6, 16, 28, 0.94)";
+
+        navbar.style.boxShadow =
+            "0 15px 45px rgba(0,0,0,0.28)";
+
+    } else {
+
+        navbar.style.background =
+            "rgba(6, 16, 28, 0.84)";
+
+        navbar.style.boxShadow =
+            "0 10px 40px rgba(0,0,0,0.18)";
+
+    }
+
+}
+
+
+window.addEventListener(
+    "scroll",
+    updateNavbar,
+    {
+        passive: true
+    }
+);
+
+updateNavbar();
+
+
+/* ======================================================
+   SERVICE MODAL
+====================================================== */
 
 const modal =
     document.getElementById("layananModal");
@@ -148,57 +208,63 @@ if (
 
     serviceCards.forEach((card) => {
 
-        card.addEventListener("click", () => {
+        card.addEventListener(
+            "click",
+            () => {
 
-            const title =
-                card.dataset.title || "Layanan";
+                const title =
+                    card.dataset.title ||
+                    "Layanan";
 
-            const description =
-                card.dataset.description || "";
+                const description =
+                    card.dataset.description ||
+                    "";
 
-            const icon =
-                card.dataset.icon || "✨";
-
-
-            modalTitle.textContent =
-                title;
-
-            modalDescription.textContent =
-                description;
-
-            modalIcon.textContent =
-                icon;
+                const icon =
+                    card.dataset.icon ||
+                    "✨";
 
 
-            const message =
+                modalTitle.textContent =
+                    title;
+
+                modalDescription.textContent =
+                    description;
+
+                modalIcon.textContent =
+                    icon;
+
+
+                const message =
 `Halo HeyyJudee.Official 👋
 
 Saya ingin bertanya mengenai layanan:
 
 📌 ${title}
 
-Mohon informasi lebih lanjut mengenai harga, estimasi pengerjaan, dan prosedur order.`;
+Mohon informasi mengenai harga, estimasi pengerjaan, dan prosedur order.`;
 
 
-            modalWhatsapp.href =
-                `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+                modalWhatsapp.href =
+                    `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
 
-            modal.classList.add("show");
+                modal.classList.add("show");
 
-            document.body.style.overflow =
-                "hidden";
+                document.body.style.overflow =
+                    "hidden";
 
-        });
+            }
+        );
 
     });
 
 }
 
 
-// ======================================================
-// CLOSE SERVICE MODAL
-// ======================================================
+/* ======================================================
+   CLOSE SERVICE MODAL
+====================================================== */
 
 function closeServiceModal() {
 
@@ -224,22 +290,25 @@ if (closeModalBtn) {
 
 if (modal) {
 
-    modal.addEventListener("click", (event) => {
+    modal.addEventListener(
+        "click",
+        (event) => {
 
-        if (event.target === modal) {
+            if (event.target === modal) {
 
-            closeServiceModal();
+                closeServiceModal();
+
+            }
 
         }
-
-    });
+    );
 
 }
 
 
-// ======================================================
-// PRICE BUTTON → WHATSAPP
-// ======================================================
+/* ======================================================
+   PRICE → WHATSAPP
+====================================================== */
 
 const priceButtons =
     document.querySelectorAll(".price-wa");
@@ -247,19 +316,23 @@ const priceButtons =
 
 priceButtons.forEach((button) => {
 
-    button.addEventListener("click", () => {
+    button.addEventListener(
+        "click",
+        () => {
 
-        const service =
-            button.dataset.service || "Layanan";
+            const service =
+                button.dataset.service ||
+                "Layanan";
 
-        const price =
-            button.dataset.price || "-";
+            const price =
+                button.dataset.price ||
+                "-";
 
 
-        const message =
+            const message =
 `Halo HeyyJudee.Official 👋
 
-Saya tertarik dengan layanan berikut:
+Saya tertarik dengan layanan:
 
 📌 Layanan: ${service}
 💰 Harga: ${price}
@@ -267,23 +340,25 @@ Saya tertarik dengan layanan berikut:
 Saya ingin konsultasi mengenai detail kebutuhan dan estimasi pengerjaannya.`;
 
 
-        const whatsappURL =
-            `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            const whatsappURL =
+                `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
 
-        window.open(
-            whatsappURL,
-            "_blank"
-        );
+            window.open(
+                whatsappURL,
+                "_blank",
+                "noopener,noreferrer"
+            );
 
-    });
+        }
+    );
 
 });
 
 
-// ======================================================
-// FAQ ACCORDION
-// ======================================================
+/* ======================================================
+   FAQ ACCORDION
+====================================================== */
 
 const faqItems =
     document.querySelectorAll(".faq-item");
@@ -297,54 +372,443 @@ faqItems.forEach((item) => {
     if (!question) return;
 
 
-    question.addEventListener("click", () => {
+    question.addEventListener(
+        "click",
+        () => {
 
-        const isActive =
-            item.classList.contains("active");
-
-
-        faqItems.forEach((otherItem) => {
-
-            otherItem.classList.remove("active");
-
-        });
+            const isActive =
+                item.classList.contains(
+                    "active"
+                );
 
 
-        if (!isActive) {
+            faqItems.forEach(
+                (faq) => {
 
-            item.classList.add("active");
+                    faq.classList.remove(
+                        "active"
+                    );
+
+                }
+            );
+
+
+            if (!isActive) {
+
+                item.classList.add(
+                    "active"
+                );
+
+            }
 
         }
-
-    });
+    );
 
 });
 
 
-// ======================================================
-// ESC KEY
-// ======================================================
+/* ======================================================
+   PREMIUM SCROLL REVEAL
+====================================================== */
 
-document.addEventListener("keydown", (event) => {
+const revealSelectors = [
 
-    if (event.key === "Escape") {
+    ".premium-service-card",
 
-        closeServiceModal();
+    ".trust-strip-item",
+
+    ".experience-highlight-card",
+
+    ".process-card",
+
+    ".premium-testimonial-card",
+
+    ".service-card",
+
+    ".price-card",
+
+    ".why-grid article",
+
+    ".testimonial-card",
+
+    ".contact-info-card",
+
+    ".certificate-grid article",
+
+    ".order-flow-grid article"
+
+];
 
 
-        if (mainNav && menuToggle) {
+const revealElements =
+    document.querySelectorAll(
+        revealSelectors.join(",")
+    );
 
-            mainNav.classList.remove("show");
 
-            menuToggle.classList.remove("active");
+revealElements.forEach(
+    (element, index) => {
 
-            menuToggle.setAttribute(
-                "aria-expanded",
-                "false"
+        element.style.opacity =
+            "0";
+
+        element.style.transform =
+            "translateY(24px)";
+
+        element.style.transition =
+            `
+            opacity 0.65s ease,
+            transform 0.65s ease,
+            border-color 0.3s ease,
+            box-shadow 0.3s ease
+            `;
+
+        element.dataset.revealDelay =
+            String(
+                Math.min(
+                    index % 4,
+                    3
+                ) * 80
+            );
+
+    }
+);
+
+
+/* ======================================================
+   INTERSECTION OBSERVER
+====================================================== */
+
+if (
+    "IntersectionObserver" in window
+) {
+
+    const revealObserver =
+        new IntersectionObserver(
+
+            (entries, observer) => {
+
+                entries.forEach(
+                    (entry) => {
+
+                        if (
+                            !entry.isIntersecting
+                        ) {
+                            return;
+                        }
+
+
+                        const element =
+                            entry.target;
+
+                        const delay =
+                            Number(
+                                element.dataset
+                                    .revealDelay ||
+                                0
+                            );
+
+
+                        setTimeout(
+                            () => {
+
+                                element.style.opacity =
+                                    "1";
+
+                                element.style.transform =
+                                    "translateY(0)";
+
+                            },
+                            delay
+                        );
+
+
+                        observer.unobserve(
+                            element
+                        );
+
+                    }
+                );
+
+            },
+
+            {
+                threshold: 0.12,
+                rootMargin:
+                    "0px 0px -40px 0px"
+            }
+
+        );
+
+
+    revealElements.forEach(
+        (element) => {
+
+            revealObserver.observe(
+                element
+            );
+
+        }
+    );
+
+} else {
+
+    revealElements.forEach(
+        (element) => {
+
+            element.style.opacity =
+                "1";
+
+            element.style.transform =
+                "translateY(0)";
+
+        }
+    );
+
+}
+
+
+/* ======================================================
+   HERO LOAD ANIMATION
+====================================================== */
+
+const heroContent =
+    document.querySelector(
+        ".premium-hero-content"
+    );
+
+const heroVisual =
+    document.querySelector(
+        ".premium-hero-visual"
+    );
+
+
+if (heroContent) {
+
+    heroContent.style.opacity =
+        "0";
+
+    heroContent.style.transform =
+        "translateY(20px)";
+
+    heroContent.style.transition =
+        `
+        opacity 0.8s ease,
+        transform 0.8s ease
+        `;
+
+}
+
+
+if (heroVisual) {
+
+    heroVisual.style.opacity =
+        "0";
+
+    heroVisual.style.transform =
+        "translateY(20px) scale(0.98)";
+
+    heroVisual.style.transition =
+        `
+        opacity 0.9s ease,
+        transform 0.9s ease
+        `;
+
+}
+
+
+window.addEventListener(
+    "load",
+    () => {
+
+        if (heroContent) {
+
+            setTimeout(
+                () => {
+
+                    heroContent.style.opacity =
+                        "1";
+
+                    heroContent.style.transform =
+                        "translateY(0)";
+
+                },
+                100
+            );
+
+        }
+
+
+        if (heroVisual) {
+
+            setTimeout(
+                () => {
+
+                    heroVisual.style.opacity =
+                        "1";
+
+                    heroVisual.style.transform =
+                        "translateY(0) scale(1)";
+
+                },
+                240
             );
 
         }
 
     }
+);
 
-});
+
+/* ======================================================
+   HERO CARD MOUSE EFFECT
+====================================================== */
+
+const heroLogoCard =
+    document.querySelector(
+        ".hero-logo-card"
+    );
+
+
+if (
+    heroLogoCard &&
+    window.matchMedia(
+        "(pointer: fine)"
+    ).matches
+) {
+
+    heroLogoCard.addEventListener(
+        "mousemove",
+        (event) => {
+
+            const rect =
+                heroLogoCard.getBoundingClientRect();
+
+
+            const x =
+                event.clientX -
+                rect.left;
+
+            const y =
+                event.clientY -
+                rect.top;
+
+
+            const centerX =
+                rect.width / 2;
+
+            const centerY =
+                rect.height / 2;
+
+
+            const rotateY =
+                ((x - centerX) /
+                    centerX) * 5;
+
+            const rotateX =
+                -(
+                    (y - centerY) /
+                    centerY
+                ) * 5;
+
+
+            heroLogoCard.style.animation =
+                "none";
+
+
+            heroLogoCard.style.transform =
+                `
+                perspective(900px)
+                rotateX(${rotateX}deg)
+                rotateY(${rotateY}deg)
+                translateY(-5px)
+                `;
+
+        }
+    );
+
+
+    heroLogoCard.addEventListener(
+        "mouseleave",
+        () => {
+
+            heroLogoCard.style.transform =
+                "";
+
+            heroLogoCard.style.animation =
+                "";
+
+        }
+    );
+
+}
+
+
+/* ======================================================
+   ESCAPE KEY
+====================================================== */
+
+document.addEventListener(
+    "keydown",
+    (event) => {
+
+        if (event.key !== "Escape") {
+            return;
+        }
+
+
+        closeServiceModal();
+
+        closeMobileMenu();
+
+    }
+);
+
+
+/* ======================================================
+   REDUCED MOTION ACCESSIBILITY
+====================================================== */
+
+const prefersReducedMotion =
+    window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+    );
+
+
+if (prefersReducedMotion.matches) {
+
+    revealElements.forEach(
+        (element) => {
+
+            element.style.opacity =
+                "1";
+
+            element.style.transform =
+                "none";
+
+        }
+    );
+
+
+    if (heroContent) {
+
+        heroContent.style.opacity =
+            "1";
+
+        heroContent.style.transform =
+            "none";
+
+    }
+
+
+    if (heroVisual) {
+
+        heroVisual.style.opacity =
+            "1";
+
+        heroVisual.style.transform =
+            "none";
+
+    }
+
+}
