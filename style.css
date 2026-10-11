@@ -3402,4 +3402,113 @@ footer span {
         font-size: 24px;
     }
 
+}/* =========================
+   LOGO RUNNING TEXT
+========================= */
+.brand-marquee {
+    display: flex;
+    align-items: center;
+    width: 260px;
+    height: 58px;
+    overflow: hidden;
+    text-decoration: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #f8fbff, #e9f2fb);
+    border: 1px solid rgba(28, 71, 112, 0.12);
+    box-shadow: 0 8px 20px rgba(28, 71, 112, 0.08);
+    padding: 0 14px;
+    position: relative;
+}
+
+.brand-marquee::before,
+.brand-marquee::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 30px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.brand-marquee::before {
+    left: 0;
+    background: linear-gradient(to right, #edf5fb 0%, rgba(237,245,251,0) 100%);
+}
+
+.brand-marquee::after {
+    right: 0;
+    background: linear-gradient(to left, #edf5fb 0%, rgba(237,245,251,0) 100%);
+}
+
+.brand-marquee-track {
+    display: inline-flex;
+    align-items: center;
+    gap: 28px;
+    width: max-content;
+    animation: marqueeLeft 16s linear infinite;
+}
+
+.brand-marquee span {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+    white-space: nowrap;
+    text-transform: uppercase;
+
+    background: linear-gradient(
+        90deg,
+        #1f466a,
+        #d5a437,
+        #1f466a
+    );
+
+    background-size: 200% auto;
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    animation: textShine 4s linear infinite;
+}
+
+@keyframes marqueeLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes textShine {
+    0% {
+        background-position: 0% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+/* Hover biar makin hidup */
+.brand-marquee:hover .brand-marquee-track {
+    animation-duration: 10s;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .brand-marquee {
+        width: 210px;
+        height: 50px;
+        padding: 0 10px;
+    }
+
+    .brand-marquee span {
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    .brand-marquee-track {
+        gap: 20px;
+    }
 }
